@@ -3,13 +3,13 @@ A clone of Windows Notepad. Has the same core text editor functionalities as Win
 but with added Google search feature. Includes find, replace, go to line, insert
 time/date, change font, zoom in/out, clipboard actions, print, and more. Offers compatibility
 with various file formats (UTF-8, UTF-16, ASCII, and Unicode). Includes cross-platform
-functionality ofr Windows, Macintosh, and Linux files.
+functionality of Windows, Macintosh, and Linux files.
 
 #### Technologies
 - Language: C#
 - Framework: .NET Framework 4.8
 
-## Setup
+## Installation and usage
 There is no installation or setup necessary for this program. To run this program, simply navigate to
 the [Release](https://github.com/JulianOzelRose/Notepad/tree/master/Notepad/bin/x64/Release) folder,
 then download ```Notepad.exe```, then run it. You'll find that the tool bar, status bar, context menu,
