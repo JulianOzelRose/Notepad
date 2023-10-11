@@ -113,30 +113,42 @@ namespace Notepad
 
         string[] FormatLineEndings(string[] lines)
         {
+            string lineEndingTemplate = GetLineEndingTemplate(lineEnding);
             string[] formattedLines = new string[lines.Length];
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lineEnding == "Windows (CRLF)")
+                if (i == formattedLines.Length - 1)
                 {
-                    formattedLines[i] = lines[i].TrimEnd('\r') + "\r\n";
-                }
-                else if (lineEnding == "Macintosh (CR)")
-                {
-                    formattedLines[i] = lines[i].TrimEnd('\r') + "\r";
-                }
-                else if (lineEnding == "Unix (LF)")
-                {
-                    formattedLines[i] = lines[i].TrimEnd('\r', '\n') + "\n";
+                    formattedLines[i] = lines[i];
                 }
                 else
                 {
-                    // Default case (CRLF)
-                    formattedLines[i] = lines[i].TrimEnd('\r') + "\r\n";
+                    formattedLines[i] = ApplyLineEndingTemplate(lines[i], lineEndingTemplate);
                 }
             }
 
             return formattedLines;
+        }
+
+        string ApplyLineEndingTemplate(string line, string template)
+        {
+            return line.TrimEnd('\r', '\n') + template;
+        }
+
+        string GetLineEndingTemplate(string lineEnding)
+        {
+            switch (lineEnding)
+            {
+                case "Macintosh (CR)":
+                    return "\r";
+                case "Unix (LF)":
+                    return "\n";
+                case "Windows (CRLF)":
+                    return "\r\n";
+                default:
+                    return "\r\n"; // Default to Windows (CRLF)
+            }
         }
 
         private void OpenFile()
