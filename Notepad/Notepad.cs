@@ -1077,5 +1077,14 @@ namespace Notepad
             contextMenuStrip.RightToLeft = RightToLeft.No;
             contextMenuStrip.Show(Cursor.Position);
         }
+
+        private void RichTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Suppress center paragraph shortcut key
+            if (e.Control && e.KeyCode == Keys.E)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
     }
 }

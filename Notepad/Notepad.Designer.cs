@@ -536,6 +536,7 @@ namespace Notepad
             this.richTextBox.WordWrap = false;
             this.richTextBox.SelectionChanged += new System.EventHandler(this.RichTextBox_SelectionChanged);
             this.richTextBox.TextChanged += new System.EventHandler(this.RichTextBox_TextChanged);
+            this.richTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RichTextBox_KeyDown);
             // 
             // contextMenuStrip
             // 
