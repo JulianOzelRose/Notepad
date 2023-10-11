@@ -19,4 +19,4 @@ and straightforward text editing experience.
 ## Screenshots
 ![Notepad-sample](https://github.com/JulianOzelRose/Notepad/assets/95890436/20ce4450-f477-4630-872b-05ee1bebb95d)
 
-![Notepad-sample 2](https://github.com/JulianOzelRose/Notepad/assets/95890436/052d17ee-6d17-45c2-9fde-8b89fc81c31e)
+![Notepad-sample 2](https://github.com/JulianOzelRose/Notepad/assets/95890436/7df24322-8bc3-4fbb-af06-7a7165719cc0)
