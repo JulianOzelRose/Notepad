@@ -17,6 +17,6 @@ and shortcut keys are identical to those of the original Windows Notepad, provid
 and straightforward text editing experience.
 
 ## Screenshots
-![Notepad-sample](https://github.com/JulianOzelRose/Notepad/assets/95890436/20ce4450-f477-4630-872b-05ee1bebb95d)
+![Notepad-sample](https://github.com/JulianOzelRose/Notepad/assets/95890436/c6fbc5c1-5caf-459a-9e44-0edcec67b425)
 
 ![Notepad-sample 2](https://github.com/JulianOzelRose/Notepad/assets/95890436/7df24322-8bc3-4fbb-af06-7a7165719cc0)
