@@ -120,6 +120,7 @@ namespace Notepad
             this.lineEndingToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
             this.charEncodingToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -542,6 +543,7 @@ namespace Notepad
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.undoContextMenuStripButton,
+            this.toolStripSeparator11,
             this.cutContextMenuStripButton,
             this.copyContextMenuStripButton,
             this.pasteContextMenuStripButton,
@@ -558,7 +560,7 @@ namespace Notepad
             this.toolStripSeparator9,
             this.searchWithGoogleContextMenuStripButton});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(249, 292);
+            this.contextMenuStrip.Size = new System.Drawing.Size(249, 298);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip_Opening);
             // 
             // undoContextMenuStripButton
@@ -899,6 +901,11 @@ namespace Notepad
             this.charEncodingToolStripStatusLabel.Text = "Unicode (UTF-8)";
             this.charEncodingToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(245, 6);
+            // 
             // Notepad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1014,6 +1021,7 @@ namespace Notepad
         private System.Windows.Forms.ToolStripMenuItem viewHelpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendFeedbackToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
     }
 }
 
