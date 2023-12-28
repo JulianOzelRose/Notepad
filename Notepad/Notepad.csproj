@@ -137,6 +137,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\x64\Release\Notepad.exe" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>

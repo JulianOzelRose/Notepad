@@ -19,12 +19,12 @@ namespace Notepad
             this.KeyPreview = true;
 
             // Reload last valid entry
-            goToTextBox.Text = lastGoToLine;
+            txtLineNumber.Text = lastGoToLine;
         }
 
         public void SendDataToParent()
         {
-            ((Notepad)this.Owner).ReceiveDataFromGoToForm(this.goToTextBox.Text);
+            ((Notepad)this.Owner).ReceiveDataFromGoToForm(this.txtLineNumber.Text);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -32,8 +32,8 @@ namespace Notepad
             // File dropdown menu shortcut key
             if ((keyData & Keys.Alt) == Keys.Alt && (keyData & Keys.KeyCode) == Keys.L)
             {
-                goToTextBox.Focus();
-                goToTextBox.SelectAll();
+                txtLineNumber.Focus();
+                txtLineNumber.SelectAll();
                 return true;
             }
 
@@ -43,7 +43,7 @@ namespace Notepad
 
         private void GoToLine()
         {
-            if (int.TryParse(goToTextBox.Text, out int lineNumber) && lineNumber >= 1 && lineNumber <= TotalLines)
+            if (int.TryParse(txtLineNumber.Text, out int lineNumber) && lineNumber >= 1 && lineNumber <= TotalLines)
             {
                 // Set property if valid number entered
                 LineNumber = lineNumber;
@@ -58,12 +58,12 @@ namespace Notepad
             SendDataToParent();
         }
 
-        private void GoToButton_Click(object sender, EventArgs e)
+        private void btnGoTo_Click(object sender, EventArgs e)
         {
             GoToLine();
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -86,10 +86,10 @@ namespace Notepad
             ToolTip toolTip = new ToolTip();
             toolTip.IsBalloon = true;
             toolTip.ToolTipTitle = "Unacceptable Character";
-            toolTip.Show("You can only type a number here.", goToTextBox, 20, -80, 3000);
+            toolTip.Show("You can only type a number here.", txtLineNumber, 20, -80, 3000);
         }
 
-        private void GoToTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtLineNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
@@ -99,13 +99,13 @@ namespace Notepad
             }
         }
 
-        private void GoToTextBox_TextChanged(object sender, EventArgs e)
+        private void txtLineNumber_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(goToTextBox.Text) && !int.TryParse(goToTextBox.Text, out _))
+            if (!string.IsNullOrWhiteSpace(txtLineNumber.Text) && !int.TryParse(txtLineNumber.Text, out _))
             {
                 // Prevent non-numeric entries with Paste
                 DisplayCharErrorToolTip();
-                goToTextBox.Text = "";
+                txtLineNumber.Text = "";
             }
         }
     }

@@ -29,121 +29,121 @@ namespace Notepad
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.findWhatTextBox = new System.Windows.Forms.TextBox();
-            this.findNextButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.downRadioButton = new System.Windows.Forms.RadioButton();
-            this.upRadioButton = new System.Windows.Forms.RadioButton();
-            this.matchCaseCheckBox = new System.Windows.Forms.CheckBox();
-            this.wrapAroundCheckBox = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
+            this.lblFindWhat = new System.Windows.Forms.Label();
+            this.txtFindWhat = new System.Windows.Forms.TextBox();
+            this.btnFindNext = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.grpDirection = new System.Windows.Forms.GroupBox();
+            this.rdoDown = new System.Windows.Forms.RadioButton();
+            this.rdoUp = new System.Windows.Forms.RadioButton();
+            this.chkMatchCase = new System.Windows.Forms.CheckBox();
+            this.chkWrapAround = new System.Windows.Forms.CheckBox();
+            this.grpDirection.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lblFindWhat
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Fi&nd what:";
+            this.lblFindWhat.AutoSize = true;
+            this.lblFindWhat.Location = new System.Drawing.Point(3, 14);
+            this.lblFindWhat.Name = "lblFindWhat";
+            this.lblFindWhat.Size = new System.Drawing.Size(56, 13);
+            this.lblFindWhat.TabIndex = 0;
+            this.lblFindWhat.Text = "Fi&nd what:";
             // 
-            // findWhatTextBox
+            // txtFindWhat
             // 
-            this.findWhatTextBox.Location = new System.Drawing.Point(65, 11);
-            this.findWhatTextBox.Name = "findWhatTextBox";
-            this.findWhatTextBox.Size = new System.Drawing.Size(183, 20);
-            this.findWhatTextBox.TabIndex = 1;
-            this.findWhatTextBox.TextChanged += new System.EventHandler(this.FindWhatTextBox_TextChanged);
+            this.txtFindWhat.Location = new System.Drawing.Point(65, 11);
+            this.txtFindWhat.Name = "txtFindWhat";
+            this.txtFindWhat.Size = new System.Drawing.Size(183, 20);
+            this.txtFindWhat.TabIndex = 1;
+            this.txtFindWhat.TextChanged += new System.EventHandler(this.txtFindWhat_TextChanged);
             // 
-            // findNextButton
+            // btnFindNext
             // 
-            this.findNextButton.Enabled = false;
-            this.findNextButton.Location = new System.Drawing.Point(258, 9);
-            this.findNextButton.Name = "findNextButton";
-            this.findNextButton.Size = new System.Drawing.Size(75, 23);
-            this.findNextButton.TabIndex = 5;
-            this.findNextButton.Text = "&Find Next";
-            this.findNextButton.UseVisualStyleBackColor = true;
-            this.findNextButton.Click += new System.EventHandler(this.FindNextButton_Click);
+            this.btnFindNext.Enabled = false;
+            this.btnFindNext.Location = new System.Drawing.Point(258, 9);
+            this.btnFindNext.Name = "btnFindNext";
+            this.btnFindNext.Size = new System.Drawing.Size(75, 23);
+            this.btnFindNext.TabIndex = 5;
+            this.btnFindNext.Text = "&Find Next";
+            this.btnFindNext.UseVisualStyleBackColor = true;
+            this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
             // 
-            // cancelButton
+            // btnCancel
             // 
-            this.cancelButton.Location = new System.Drawing.Point(258, 38);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 6;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.btnCancel.Location = new System.Drawing.Point(258, 38);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 6;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // groupBox1
+            // grpDirection
             // 
-            this.groupBox1.Controls.Add(this.downRadioButton);
-            this.groupBox1.Controls.Add(this.upRadioButton);
-            this.groupBox1.Location = new System.Drawing.Point(121, 41);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(127, 44);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Direction";
+            this.grpDirection.Controls.Add(this.rdoDown);
+            this.grpDirection.Controls.Add(this.rdoUp);
+            this.grpDirection.Location = new System.Drawing.Point(121, 41);
+            this.grpDirection.Name = "grpDirection";
+            this.grpDirection.Size = new System.Drawing.Size(127, 44);
+            this.grpDirection.TabIndex = 4;
+            this.grpDirection.TabStop = false;
+            this.grpDirection.Text = "Direction";
             // 
-            // downRadioButton
+            // rdoDown
             // 
-            this.downRadioButton.AutoSize = true;
-            this.downRadioButton.Checked = true;
-            this.downRadioButton.Location = new System.Drawing.Point(61, 19);
-            this.downRadioButton.Name = "downRadioButton";
-            this.downRadioButton.Size = new System.Drawing.Size(53, 17);
-            this.downRadioButton.TabIndex = 4;
-            this.downRadioButton.TabStop = true;
-            this.downRadioButton.Text = "&Down";
-            this.downRadioButton.UseVisualStyleBackColor = true;
+            this.rdoDown.AutoSize = true;
+            this.rdoDown.Checked = true;
+            this.rdoDown.Location = new System.Drawing.Point(61, 19);
+            this.rdoDown.Name = "rdoDown";
+            this.rdoDown.Size = new System.Drawing.Size(53, 17);
+            this.rdoDown.TabIndex = 4;
+            this.rdoDown.TabStop = true;
+            this.rdoDown.Text = "&Down";
+            this.rdoDown.UseVisualStyleBackColor = true;
             // 
-            // upRadioButton
+            // rdoUp
             // 
-            this.upRadioButton.AutoSize = true;
-            this.upRadioButton.Location = new System.Drawing.Point(16, 19);
-            this.upRadioButton.Name = "upRadioButton";
-            this.upRadioButton.Size = new System.Drawing.Size(39, 17);
-            this.upRadioButton.TabIndex = 0;
-            this.upRadioButton.Text = "&Up";
-            this.upRadioButton.UseVisualStyleBackColor = true;
+            this.rdoUp.AutoSize = true;
+            this.rdoUp.Location = new System.Drawing.Point(16, 19);
+            this.rdoUp.Name = "rdoUp";
+            this.rdoUp.Size = new System.Drawing.Size(39, 17);
+            this.rdoUp.TabIndex = 0;
+            this.rdoUp.Text = "&Up";
+            this.rdoUp.UseVisualStyleBackColor = true;
             // 
-            // matchCaseCheckBox
+            // chkMatchCase
             // 
-            this.matchCaseCheckBox.AutoSize = true;
-            this.matchCaseCheckBox.Location = new System.Drawing.Point(9, 68);
-            this.matchCaseCheckBox.Name = "matchCaseCheckBox";
-            this.matchCaseCheckBox.Size = new System.Drawing.Size(82, 17);
-            this.matchCaseCheckBox.TabIndex = 2;
-            this.matchCaseCheckBox.Text = "Match &case";
-            this.matchCaseCheckBox.UseVisualStyleBackColor = true;
+            this.chkMatchCase.AutoSize = true;
+            this.chkMatchCase.Location = new System.Drawing.Point(9, 68);
+            this.chkMatchCase.Name = "chkMatchCase";
+            this.chkMatchCase.Size = new System.Drawing.Size(82, 17);
+            this.chkMatchCase.TabIndex = 2;
+            this.chkMatchCase.Text = "Match &case";
+            this.chkMatchCase.UseVisualStyleBackColor = true;
             // 
-            // wrapAroundCheckBox
+            // chkWrapAround
             // 
-            this.wrapAroundCheckBox.AutoSize = true;
-            this.wrapAroundCheckBox.Location = new System.Drawing.Point(9, 91);
-            this.wrapAroundCheckBox.Name = "wrapAroundCheckBox";
-            this.wrapAroundCheckBox.Size = new System.Drawing.Size(88, 17);
-            this.wrapAroundCheckBox.TabIndex = 3;
-            this.wrapAroundCheckBox.Text = "W&rap around";
-            this.wrapAroundCheckBox.UseVisualStyleBackColor = true;
+            this.chkWrapAround.AutoSize = true;
+            this.chkWrapAround.Location = new System.Drawing.Point(9, 91);
+            this.chkWrapAround.Name = "chkWrapAround";
+            this.chkWrapAround.Size = new System.Drawing.Size(88, 17);
+            this.chkWrapAround.TabIndex = 3;
+            this.chkWrapAround.Text = "W&rap around";
+            this.chkWrapAround.UseVisualStyleBackColor = true;
             // 
             // FindForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(345, 120);
-            this.Controls.Add(this.wrapAroundCheckBox);
-            this.Controls.Add(this.matchCaseCheckBox);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.findNextButton);
-            this.Controls.Add(this.findWhatTextBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.chkWrapAround);
+            this.Controls.Add(this.chkMatchCase);
+            this.Controls.Add(this.grpDirection);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnFindNext);
+            this.Controls.Add(this.txtFindWhat);
+            this.Controls.Add(this.lblFindWhat);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -152,8 +152,8 @@ namespace Notepad
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Find";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FindForm_KeyDown);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpDirection.ResumeLayout(false);
+            this.grpDirection.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,14 +161,14 @@ namespace Notepad
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button findNextButton;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton downRadioButton;
-        private System.Windows.Forms.RadioButton upRadioButton;
-        private System.Windows.Forms.CheckBox matchCaseCheckBox;
-        private System.Windows.Forms.CheckBox wrapAroundCheckBox;
-        public System.Windows.Forms.TextBox findWhatTextBox;
+        private System.Windows.Forms.Label lblFindWhat;
+        private System.Windows.Forms.Button btnFindNext;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox grpDirection;
+        private System.Windows.Forms.RadioButton rdoDown;
+        private System.Windows.Forms.RadioButton rdoUp;
+        private System.Windows.Forms.CheckBox chkMatchCase;
+        private System.Windows.Forms.CheckBox chkWrapAround;
+        public System.Windows.Forms.TextBox txtFindWhat;
     }
 }

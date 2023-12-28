@@ -29,97 +29,97 @@ namespace Notepad
         /// </summary>
         private void InitializeComponent()
         {
-            this.OKButtonAbout = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.githubLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.lblNotepad = new System.Windows.Forms.Label();
+            this.lblAbout1 = new System.Windows.Forms.Label();
+            this.lblAbout2 = new System.Windows.Forms.Label();
+            this.llbGitHub = new System.Windows.Forms.LinkLabel();
+            this.picNotepad = new System.Windows.Forms.PictureBox();
+            this.lblSeparator = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.picNotepad)).BeginInit();
             this.SuspendLayout();
             // 
-            // OKButtonAbout
+            // btnOK
             // 
-            this.OKButtonAbout.Location = new System.Drawing.Point(355, 321);
-            this.OKButtonAbout.Name = "OKButtonAbout";
-            this.OKButtonAbout.Size = new System.Drawing.Size(75, 23);
-            this.OKButtonAbout.TabIndex = 0;
-            this.OKButtonAbout.Text = "OK";
-            this.OKButtonAbout.UseVisualStyleBackColor = true;
-            this.OKButtonAbout.Click += new System.EventHandler(this.OKButtonAbout_Click);
+            this.btnOK.Location = new System.Drawing.Point(355, 321);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 0;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // label1
+            // lblNotepad
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(147, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(207, 55);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Notepad";
+            this.lblNotepad.AutoSize = true;
+            this.lblNotepad.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNotepad.ForeColor = System.Drawing.Color.Blue;
+            this.lblNotepad.Location = new System.Drawing.Point(147, 24);
+            this.lblNotepad.Name = "lblNotepad";
+            this.lblNotepad.Size = new System.Drawing.Size(207, 55);
+            this.lblNotepad.TabIndex = 2;
+            this.lblNotepad.Text = "Notepad";
             // 
-            // label2
+            // lblAbout1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 148);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(245, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "This Notepad clone was written by Julian O. Rose.";
+            this.lblAbout1.AutoSize = true;
+            this.lblAbout1.Location = new System.Drawing.Point(52, 148);
+            this.lblAbout1.Name = "lblAbout1";
+            this.lblAbout1.Size = new System.Drawing.Size(245, 13);
+            this.lblAbout1.TabIndex = 3;
+            this.lblAbout1.Text = "This Notepad clone was written by Julian O. Rose.";
             // 
-            // label3
+            // lblAbout2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(52, 170);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(197, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "For more projects, check out my GitHub:";
+            this.lblAbout2.AutoSize = true;
+            this.lblAbout2.Location = new System.Drawing.Point(52, 170);
+            this.lblAbout2.Name = "lblAbout2";
+            this.lblAbout2.Size = new System.Drawing.Size(197, 13);
+            this.lblAbout2.TabIndex = 4;
+            this.lblAbout2.Text = "For more projects, check out my GitHub:";
             // 
-            // githubLinkLabel
+            // llbGitHub
             // 
-            this.githubLinkLabel.AutoSize = true;
-            this.githubLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.githubLinkLabel.Location = new System.Drawing.Point(52, 205);
-            this.githubLinkLabel.Name = "githubLinkLabel";
-            this.githubLinkLabel.Size = new System.Drawing.Size(211, 16);
-            this.githubLinkLabel.TabIndex = 5;
-            this.githubLinkLabel.TabStop = true;
-            this.githubLinkLabel.Text = "https://github.com/JulianOzelRose";
-            this.githubLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.GitHubLinkLabel_LinkClicked);
+            this.llbGitHub.AutoSize = true;
+            this.llbGitHub.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llbGitHub.Location = new System.Drawing.Point(52, 205);
+            this.llbGitHub.Name = "llbGitHub";
+            this.llbGitHub.Size = new System.Drawing.Size(211, 16);
+            this.llbGitHub.TabIndex = 5;
+            this.llbGitHub.TabStop = true;
+            this.llbGitHub.Text = "https://github.com/JulianOzelRose";
+            this.llbGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llbGitHub_LinkClicked);
             // 
-            // pictureBox1
+            // picNotepad
             // 
-            this.pictureBox1.Image = global::Notepad.Properties.Resources.Notepad_logo;
-            this.pictureBox1.Location = new System.Drawing.Point(83, 13);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(56, 69);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
+            this.picNotepad.Image = global::Notepad.Properties.Resources.Notepad_logo;
+            this.picNotepad.Location = new System.Drawing.Point(83, 13);
+            this.picNotepad.Name = "picNotepad";
+            this.picNotepad.Size = new System.Drawing.Size(56, 69);
+            this.picNotepad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picNotepad.TabIndex = 6;
+            this.picNotepad.TabStop = false;
             // 
-            // label4
+            // lblSeparator
             // 
-            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label4.Location = new System.Drawing.Point(10, 105);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(420, 1);
-            this.label4.TabIndex = 7;
+            this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSeparator.Location = new System.Drawing.Point(10, 105);
+            this.lblSeparator.Name = "lblSeparator";
+            this.lblSeparator.Size = new System.Drawing.Size(420, 1);
+            this.lblSeparator.TabIndex = 7;
             // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 356);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.githubLinkLabel);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.OKButtonAbout);
+            this.Controls.Add(this.lblSeparator);
+            this.Controls.Add(this.picNotepad);
+            this.Controls.Add(this.llbGitHub);
+            this.Controls.Add(this.lblAbout2);
+            this.Controls.Add(this.lblAbout1);
+            this.Controls.Add(this.lblNotepad);
+            this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -128,7 +128,7 @@ namespace Notepad
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About Notepad";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AboutForm_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picNotepad)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,12 +136,12 @@ namespace Notepad
 
         #endregion
 
-        private System.Windows.Forms.Button OKButtonAbout;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.LinkLabel githubLinkLabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Label lblNotepad;
+        private System.Windows.Forms.Label lblAbout1;
+        private System.Windows.Forms.Label lblAbout2;
+        private System.Windows.Forms.LinkLabel llbGitHub;
+        private System.Windows.Forms.PictureBox picNotepad;
+        private System.Windows.Forms.Label lblSeparator;
     }
 }

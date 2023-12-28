@@ -16,19 +16,19 @@ namespace Notepad
             InitializeComponent();
 
             this.KeyPreview = true;
-            this.ActiveControl = findWhatTextBoxReplace;
+            this.ActiveControl = txtFindWhat;
 
             // Reload previous search params
-            findWhatTextBoxReplace.Text = lastSearch;
-            replaceWithTextBox.Text = lastReplace;
-            matchCaseCheckBox.Checked = matchCase;
-            wrapAroundCheckBox.Checked = wrapAround;
+            txtFindWhat.Text = lastSearch;
+            txtReplaceWith.Text = lastReplace;
+            chkMatchCase.Checked = matchCase;
+            chkWrapAround.Checked = wrapAround;
         }
 
         public void SendDataToParent()
         {
-            ((Notepad)this.Owner).ReceiveDataFromReplaceForm(this.findWhatTextBoxReplace.Text, this.replaceWithTextBox.Text,
-                this.matchCaseCheckBox.Checked, this.wrapAroundCheckBox.Checked);
+            ((Notepad)this.Owner).ReceiveDataFromReplaceForm(this.txtFindWhat.Text, this.txtReplaceWith.Text,
+                this.chkMatchCase.Checked, this.chkWrapAround.Checked);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -36,16 +36,16 @@ namespace Notepad
             // Find textbox shortcut keys
             if ((keyData & Keys.Alt) == Keys.Alt && (keyData & Keys.KeyCode) == Keys.N)
             {
-                findWhatTextBoxReplace.Focus();
-                findWhatTextBoxReplace.SelectAll();
+                txtFindWhat.Focus();
+                txtFindWhat.SelectAll();
                 return true;
             }
 
             // Replace with textbox shortcut keys
             if ((keyData & Keys.Alt) == Keys.Alt && (keyData & Keys.KeyCode) == Keys.P)
             {
-                replaceWithTextBox.Focus();
-                replaceWithTextBox.SelectAll();
+                txtReplaceWith.Focus();
+                txtReplaceWith.SelectAll();
                 return true;
             }
 
@@ -63,7 +63,7 @@ namespace Notepad
 
         private void FindNext()
         {
-            textToFind = findWhatTextBoxReplace.Text;
+            textToFind = txtFindWhat.Text;
 
             if (!string.IsNullOrEmpty(textToFind) && richTextBox != null)
             {
@@ -72,12 +72,12 @@ namespace Notepad
 
                 RichTextBoxFinds searchOptions = RichTextBoxFinds.None;
 
-                if (matchCaseCheckBox.Checked)
+                if (chkMatchCase.Checked)
                 {
                     searchOptions |= RichTextBoxFinds.MatchCase;
                 }
 
-                if (!wrapAroundCheckBox.Checked)
+                if (!chkWrapAround.Checked)
                 {
                     // If wrap around is disabled, only search within the current selection
                     startPosition = Math.Max(0, Math.Min(startPosition, textLength));
@@ -155,8 +155,8 @@ namespace Notepad
 
         private void Replace()
         {
-            replaceWithText = replaceWithTextBox.Text;
-            textToFind = findWhatTextBoxReplace.Text;
+            replaceWithText = txtReplaceWith.Text;
+            textToFind = txtFindWhat.Text;
 
             if (!string.IsNullOrEmpty(textToFind) && richTextBox != null)
             {
@@ -164,7 +164,7 @@ namespace Notepad
 
                 RichTextBoxFinds searchOptions = RichTextBoxFinds.None;
 
-                if (matchCaseCheckBox.Checked)
+                if (chkMatchCase.Checked)
                 {
                     searchOptions |= RichTextBoxFinds.MatchCase;
                 }
@@ -208,8 +208,8 @@ namespace Notepad
 
         private void ReplaceAll()
         {
-            replaceWithText = replaceWithTextBox.Text;
-            textToFind = findWhatTextBoxReplace.Text;
+            replaceWithText = txtReplaceWith.Text;
+            textToFind = txtFindWhat.Text;
 
             if (!string.IsNullOrEmpty(textToFind) && richTextBox != null)
             {
@@ -219,14 +219,14 @@ namespace Notepad
 
                 RichTextBoxFinds searchOptions = RichTextBoxFinds.None;
 
-                if (matchCaseCheckBox.Checked)
+                if (chkMatchCase.Checked)
                 {
                     searchOptions |= RichTextBoxFinds.MatchCase;
                 }
 
                 while (index >= 0)
                 {
-                    if (!wrapAroundCheckBox.Checked)
+                    if (!chkWrapAround.Checked)
                     {
                         // If wrap around is disabled, only search within the current selection
                         int startPosition = index + textToFind.Length;
@@ -269,22 +269,22 @@ namespace Notepad
             SendDataToParent();
         }
 
-        private void FindNextButton_Click(object sender, EventArgs e)
+        private void btnFindNext_Click(object sender, EventArgs e)
         {
             FindNext();
         }
 
-        private void ReplaceButton_Click(object sender, EventArgs e)
+        private void btnReplace_Click(object sender, EventArgs e)
         {
             Replace();
         }
 
-        private void ReplaceAllButton_Click(object sender, EventArgs e)
+        private void btnReplaceAll_Click(object sender, EventArgs e)
         {
             ReplaceAll();
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -296,18 +296,18 @@ namespace Notepad
                 this.Close();
             }
 
-            if (e.KeyCode == Keys.Enter && findNextButton.Enabled)
+            if (e.KeyCode == Keys.Enter && btnFindNext.Enabled)
             {
                 FindNext();
             }
         }
 
-        private void FindWhatTextBox_TextChanged(object sender, EventArgs e)
+        private void txtFindWhat_TextChanged(object sender, EventArgs e)
         {
             // Update button states
-            findNextButton.Enabled = !string.IsNullOrEmpty(findWhatTextBoxReplace.Text);
-            replaceButton.Enabled = !string.IsNullOrEmpty(findWhatTextBoxReplace.Text);
-            replaceAllButton.Enabled = !string.IsNullOrEmpty(findWhatTextBoxReplace.Text);
+            btnFindNext.Enabled = !string.IsNullOrEmpty(txtFindWhat.Text);
+            btnReplace.Enabled = !string.IsNullOrEmpty(txtFindWhat.Text);
+            btnReplaceAll.Enabled = !string.IsNullOrEmpty(txtFindWhat.Text);
         }
     }
 }

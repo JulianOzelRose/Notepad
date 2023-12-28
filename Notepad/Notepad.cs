@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Printing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Drawing.Printing;
 
 namespace Notepad
 {
@@ -19,8 +19,8 @@ namespace Notepad
     {
         public string RichTextBoxText
         {
-            get { return richTextBox.Text; }
-            set { richTextBox.Text = value; }
+            get { return rtxText.Text; }
+            set { rtxText.Text = value; }
         }
 
         public Notepad()
@@ -28,19 +28,19 @@ namespace Notepad
             InitializeComponent();
 
             // Set toolStrip orientation
-            toolStrip.Dock = DockStyle.Top;
+            tsrToolStrip.Dock = DockStyle.Top;
 
             // Set richTextBox properties
-            richTextBox.Dock = DockStyle.None;
-            richTextBox.Height = this.ClientSize.Height - statusStrip.Height - toolStrip.Height;
+            rtxText.Dock = DockStyle.None;
+            rtxText.Height = this.ClientSize.Height - ssrStatusStrip.Height - tsrToolStrip.Height;
 
             // Set state of Paste buttons
-            pasteToolStripMenuItem.Enabled = Clipboard.ContainsText();
-            pasteContextMenuStripButton.Enabled = Clipboard.ContainsText();
+            tsmiPaste.Enabled = Clipboard.ContainsText();
+            btncmsPaste.Enabled = Clipboard.ContainsText();
 
             // Set state of Select All buttons
-            selectAllToolStripMenuItem.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
-            selectAllContextMenuStripButton.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
+            tsmiSelectAll.Enabled = !string.IsNullOrEmpty(rtxText.Text);
+            btncmsSelectAll.Enabled = !string.IsNullOrEmpty(rtxText.Text);
 
             // Other text properties
             showUnicodeControlChars = false;
@@ -50,7 +50,7 @@ namespace Notepad
             fileName = "Untitled";
 
             // Display default encoding as UTF-8
-            charEncodingToolStripStatusLabel.Text = Encoding.UTF8.EncodingName;
+            slblCharEncoding.Text = Encoding.UTF8.EncodingName;
 
             // Set window title
             this.Text = fileName + " - Notepad";
@@ -62,7 +62,7 @@ namespace Notepad
         private string fileContent;
         private string lastSearch;
         private bool showUnicodeControlChars;
-        private bool displayRightToLeft;  
+        private bool displayRightToLeft;
         string lineEnding = "Windows (CRLF)";
         // Search vars
         string lastGoToLine;
@@ -81,12 +81,12 @@ namespace Notepad
                 using (StreamWriter writer = new StreamWriter(filePath, false, new UTF8Encoding(true)))
                 {
                     // Format line endings and write to file
-                    string[] formattedLines = FormatLineEndings(richTextBox.Text.Split('\n'));
+                    string[] formattedLines = FormatLineEndings(rtxText.Text.Split('\n'));
                     writer.Write(string.Join("", formattedLines));
                 }
 
                 // Update richTextBox Modified state
-                richTextBox.Modified = false;
+                rtxText.Modified = false;
 
                 // Update window title
                 this.Text = fileName + " - Notepad";
@@ -104,7 +104,7 @@ namespace Notepad
                     using (StreamWriter writer = new StreamWriter(selectedFilePath, false, new UTF8Encoding(true)))
                     {
                         // Format line endings and write to file
-                        string[] formattedLines = FormatLineEndings(richTextBox.Text.Split('\n'));
+                        string[] formattedLines = FormatLineEndings(rtxText.Text.Split('\n'));
                         writer.Write(string.Join("", formattedLines));
                     }
                 }
@@ -167,7 +167,7 @@ namespace Notepad
                 filePath = openFileDialog.FileName;
                 fileContent = File.ReadAllText(filePath);
                 fileName = Path.GetFileName(filePath);
-                richTextBox.Text = fileContent;
+                rtxText.Text = fileContent;
 
                 // Detect encoding and line endings
                 DetectEncoding();
@@ -181,7 +181,7 @@ namespace Notepad
         private void SearchWithGoogle()
         {
             // Get the selected text from the RichTextBox
-            string selectedText = richTextBox.SelectedText;
+            string selectedText = rtxText.SelectedText;
 
             // Check if there is selected text
             if (!string.IsNullOrEmpty(selectedText))
@@ -218,11 +218,11 @@ namespace Notepad
             lastSearch = lastSearchText;
         }
 
-        private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiReplace_Click(object sender, EventArgs e)
         {
             ReplaceForm replaceForm = new ReplaceForm(searchText, replaceWithText, matchCase, wrapAround);
-            replaceForm.SetParentRichTextBox(richTextBox);
-            replaceForm.RichTextBoxControl = richTextBox;
+            replaceForm.SetParentRichTextBox(rtxText);
+            replaceForm.RichTextBoxControl = rtxText;
             replaceForm.Owner = this;
 
             replaceForm.SendDataToParent();
@@ -232,24 +232,24 @@ namespace Notepad
         private void Find()
         {
             FindForm findForm = new FindForm(searchText, searchUp, searchDown, matchCase, wrapAround);
-            findForm.RichTextBoxControl = richTextBox;
+            findForm.RichTextBoxControl = rtxText;
             findForm.Owner = this;
 
             findForm.SendDataToParent();
             findForm.ShowDialog();
 
             // Save richTextBox Modified state
-            bool rtbPrevState = richTextBox.Modified;
+            bool rtbPrevState = rtxText.Modified;
 
             // Check the FoundTextPosition property after the child form is closed
             if (findForm.FoundTextPosition >= 0)
             {
                 // Clear previous selection highlight
-                richTextBox.Select(0, richTextBox.Text.Length);
-                richTextBox.SelectionBackColor = Color.White;
+                rtxText.Select(0, rtxText.Text.Length);
+                rtxText.SelectionBackColor = Color.White;
 
                 // Select the found text in the parent richTextBox
-                richTextBox.Select(findForm.FoundTextPosition, findForm.findWhatTextBox.Text.Length);
+                rtxText.Select(findForm.FoundTextPosition, findForm.txtFindWhat.Text.Length);
             }
             else
             {
@@ -258,44 +258,44 @@ namespace Notepad
             }
 
             // Update Find Next button state
-            findNextToolStripMenuItem.Enabled = true;
+            tsmiFindNext.Enabled = true;
 
             // Reset richTextBox Modified to previous state
-            richTextBox.Modified = rtbPrevState;
+            rtxText.Modified = rtbPrevState;
         }
 
         private void FindNext()
         {
             // Save richTextBox Modified state
-            bool rtbPrevState = richTextBox.Modified;
+            bool rtbPrevState = rtxText.Modified;
 
             // Determine the starting position based on the current selection
-            int startPosition = richTextBox.SelectionStart + richTextBox.SelectionLength;
+            int startPosition = rtxText.SelectionStart + rtxText.SelectionLength;
 
             // Ensure that the startPosition is within the valid range
             startPosition = Math.Max(startPosition, 0);
-            startPosition = Math.Min(startPosition, richTextBox.Text.Length - 1);
+            startPosition = Math.Min(startPosition, rtxText.Text.Length - 1);
 
             // Define the search options based on matchCase
             RichTextBoxFinds searchOptions = matchCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
 
             // Perform the search
-            int index = richTextBox.Find(lastSearch, startPosition, searchOptions);
+            int index = rtxText.Find(lastSearch, startPosition, searchOptions);
 
             if (index >= 0)
             {
                 // Select the found text
-                richTextBox.Select(index, lastSearch.Length);
+                rtxText.Select(index, lastSearch.Length);
             }
             else if (wrapAround)
             {
                 // Handle wrap around if enabled
-                index = richTextBox.Find(lastSearch, 0, searchOptions);
+                index = rtxText.Find(lastSearch, 0, searchOptions);
 
                 if (index >= 0)
                 {
                     // Select the found text
-                    richTextBox.Select(index, lastSearch.Length);
+                    rtxText.Select(index, lastSearch.Length);
                 }
                 else
                 {
@@ -310,16 +310,16 @@ namespace Notepad
             }
 
             // Reset richTextBox Modified to previous state
-            richTextBox.Modified = rtbPrevState;
+            rtxText.Modified = rtbPrevState;
         }
 
         private void FindPrevious()
         {
             // Save richTextBox Modified state
-            bool rtbPrevState = richTextBox.Modified;
+            bool rtbPrevState = rtxText.Modified;
 
             // Determine the starting position based on the current selection
-            int startPosition = richTextBox.SelectionStart - 1;
+            int startPosition = rtxText.SelectionStart - 1;
 
             // Ensure that startPosition is within valid range
             startPosition = Math.Max(startPosition, 0);
@@ -332,23 +332,23 @@ namespace Notepad
 
             if (startPosition >= 0)
             {
-                index = richTextBox.Find(lastSearch, 0, startPosition, searchOptions | RichTextBoxFinds.Reverse);
+                index = rtxText.Find(lastSearch, 0, startPosition, searchOptions | RichTextBoxFinds.Reverse);
             }
 
             if (index >= 0)
             {
                 // Select the found text
-                richTextBox.Select(index, lastSearch.Length);
+                rtxText.Select(index, lastSearch.Length);
             }
             else if (wrapAround)
             {
                 // Handle wrap around if enabled
-                index = richTextBox.Find(lastSearch, richTextBox.Text.Length - 1, searchOptions | RichTextBoxFinds.Reverse);
+                index = rtxText.Find(lastSearch, rtxText.Text.Length - 1, searchOptions | RichTextBoxFinds.Reverse);
 
                 if (index >= 0)
                 {
                     // Select the found text
-                    richTextBox.Select(index, lastSearch.Length);
+                    rtxText.Select(index, lastSearch.Length);
                 }
                 else
                 {
@@ -363,41 +363,41 @@ namespace Notepad
             }
 
             // Reset richTextBox Modified to previous state
-            richTextBox.Modified = rtbPrevState;
+            rtxText.Modified = rtbPrevState;
         }
 
         private void Paste()
         {
-            if (richTextBox.CanPaste(DataFormats.GetFormat(DataFormats.Text)))
+            if (rtxText.CanPaste(DataFormats.GetFormat(DataFormats.Text)))
             {
                 // Get selection info
-                int selectionStart = richTextBox.SelectionStart;
-                int selectionLength = richTextBox.SelectionLength;
+                int selectionStart = rtxText.SelectionStart;
+                int selectionLength = rtxText.SelectionLength;
 
                 // Get clipboard text
                 string clipboardText = (string)Clipboard.GetDataObject().GetData(DataFormats.Text);
 
                 // Replace the selected text with the pasted text
-                richTextBox.Text = richTextBox.Text.Remove(selectionStart, selectionLength).Insert(selectionStart, clipboardText);
+                rtxText.Text = rtxText.Text.Remove(selectionStart, selectionLength).Insert(selectionStart, clipboardText);
 
                 // Set the SelectionStart to the end of the pasted text
-                richTextBox.SelectionStart = selectionStart + clipboardText.Length;
+                rtxText.SelectionStart = selectionStart + clipboardText.Length;
 
                 // Set SelectionLength to 0 to clear any selected text
-                richTextBox.SelectionLength = 0;
+                rtxText.SelectionLength = 0;
 
                 // Scroll to the caret position if necessary
-                richTextBox.ScrollToCaret();
+                rtxText.ScrollToCaret();
 
                 // Manually set richTextBox Modified state
-                richTextBox.Modified = true;
+                rtxText.Modified = true;
             }
         }
 
         public void UpdateUIAfterHighlight()
         {
             // Change the background color of the selected text
-            richTextBox.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight);
+            rtxText.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight);
 
             // Reset the background color after a delay
             Timer resetHighlightTimer = new Timer();
@@ -406,50 +406,50 @@ namespace Notepad
             resetHighlightTimer.Tick += (sender, e) =>
             {
                 // Reset background color, stop timer
-                richTextBox.SelectionBackColor = Color.White;
+                rtxText.SelectionBackColor = Color.White;
                 resetHighlightTimer.Stop();
             };
 
             resetHighlightTimer.Start();
         }
 
-        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiStatusBar_Click(object sender, EventArgs e)
         {
-            if (statusStrip.Visible)
+            if (ssrStatusStrip.Visible)
             {
                 // Hide statusStrip
-                statusStrip.Visible = false;
-                statusBarToolStripMenuItem.Checked = false;
+                ssrStatusStrip.Visible = false;
+                tsmiStatusBar.Checked = false;
 
                 // Set richTextBox dock style to automatic
-                richTextBox.Dock = DockStyle.Fill;
+                rtxText.Dock = DockStyle.Fill;
             }
             else
             {
                 // Show statusStrip
-                statusStrip.Visible = true;
-                statusBarToolStripMenuItem.Checked = true;
+                ssrStatusStrip.Visible = true;
+                tsmiStatusBar.Checked = true;
 
                 // Set richTextBox dock style for manual adjustment
-                richTextBox.Dock = DockStyle.None;
+                rtxText.Dock = DockStyle.None;
 
                 // Manually adjust the size of richTextBox based on the window size, statusStrip height, and toolStrip height
-                richTextBox.Height = this.ClientSize.Height - statusStrip.Height - toolStrip.Height;
-                richTextBox.Width = this.ClientSize.Width;
+                rtxText.Height = this.ClientSize.Height - ssrStatusStrip.Height - tsrToolStrip.Height;
+                rtxText.Width = this.ClientSize.Width;
             }
         }
 
-        private void FontToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFont_Click(object sender, EventArgs e)
         {
             // Save richTextBox Modified state
-            bool rtbPrevState = richTextBox.Modified;
+            bool rtbPrevState = rtxText.Modified;
 
             // Create an instance of the FontDialog
             FontDialog fontDialog = new FontDialog();
 
             // Set initial font properties
-            fontDialog.Font = richTextBox.Font;
-            fontDialog.Color = richTextBox.ForeColor;
+            fontDialog.Font = rtxText.Font;
+            fontDialog.Color = rtxText.ForeColor;
 
             // Show the font dialog and capture the result
             DialogResult result = fontDialog.ShowDialog();
@@ -458,18 +458,18 @@ namespace Notepad
             if (result == DialogResult.OK)
             {
                 // Apply the selected font to richTextBox
-                richTextBox.Font = fontDialog.Font;
-                richTextBox.ForeColor = fontDialog.Color;
+                rtxText.Font = fontDialog.Font;
+                rtxText.ForeColor = fontDialog.Color;
             }
 
             // Reset richTextBox Modified to previous state
-            richTextBox.Modified = rtbPrevState;
+            rtxText.Modified = rtbPrevState;
         }
 
-        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiNew_Click(object sender, EventArgs e)
         {
             // Prompt save dialog before new file if text changed
-            if (richTextBox.Modified)
+            if (rtxText.Modified)
             {
                 DialogResult result = MessageBox.Show($"Do you want to save changes to {fileName}?", "Notepad",
                     MessageBoxButtons.YesNoCancel,
@@ -483,7 +483,7 @@ namespace Notepad
             }
 
             // Clear richTextBox contents
-            richTextBox.Clear();
+            rtxText.Clear();
             filePath = null;
             fileName = "Untitled";
 
@@ -491,22 +491,22 @@ namespace Notepad
             this.Text = fileName + " - Notepad";
 
             // Display default line ending
-            lineEndingToolStripStatusLabel.Text = "Windows (CRLF)";
+            slblLineEnding.Text = "Windows (CRLF)";
 
             // Display default encoding as UTF-8
-            charEncodingToolStripStatusLabel.Text = Encoding.UTF8.EncodingName;
+            slblCharEncoding.Text = Encoding.UTF8.EncodingName;
         }
 
-        private void NewWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiNewWindow_Click(object sender, EventArgs e)
         {
             Notepad notepad = new Notepad();
             notepad.Show();
         }
 
-        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiOpen_Click(object sender, EventArgs e)
         {
             // Prompt save dialog before opening file if text changed
-            if (richTextBox.Modified)
+            if (rtxText.Modified)
             {
                 DialogResult result = MessageBox.Show($"Do you want to save changes to {fileName}?", "Notepad",
                     MessageBoxButtons.YesNoCancel,
@@ -522,28 +522,28 @@ namespace Notepad
             OpenFile();
         }
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void WordWrapToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiWordWrap_Click(object sender, EventArgs e)
         {
-            if (richTextBox.WordWrap)
+            if (rtxText.WordWrap)
             {
-                richTextBox.WordWrap = false;
-                wordWrapToolStripMenuItem.Checked = false;
-                goToToolStripMenuItem.Enabled = true;
+                rtxText.WordWrap = false;
+                tsmiWordWrap.Checked = false;
+                tsmiGoTo.Enabled = true;
             }
             else
             {
-                richTextBox.WordWrap = true;
-                wordWrapToolStripMenuItem.Checked = true;
-                goToToolStripMenuItem.Enabled = false;
+                rtxText.WordWrap = true;
+                tsmiWordWrap.Checked = true;
+                tsmiGoTo.Enabled = false;
             }
         }
 
-        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiSave_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(filePath))
             {
@@ -562,7 +562,7 @@ namespace Notepad
                     using (StreamWriter writer = new StreamWriter(selectedFilePath, false, new UTF8Encoding(true)))
                     {
                         // Format line endings and write to file
-                        string[] formattedLines = FormatLineEndings(richTextBox.Text.Split('\n'));
+                        string[] formattedLines = FormatLineEndings(rtxText.Text.Split('\n'));
                         writer.Write(string.Join("", formattedLines));
                     }
 
@@ -571,18 +571,18 @@ namespace Notepad
                     fileName = Path.GetFileName(filePath);
 
                     // Update richTextBox Modified state
-                    richTextBox.Modified = false;
+                    rtxText.Modified = false;
 
                     // Update window title
                     this.Text = fileName + " - Notepad";
 
                     // Display default line ending
-                    lineEndingToolStripStatusLabel.Text = "Windows (CRLF)";
+                    slblLineEnding.Text = "Windows (CRLF)";
                 }
             }
         }
 
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiSaveAs_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
@@ -595,7 +595,7 @@ namespace Notepad
                 using (StreamWriter writer = new StreamWriter(selectedFilePath, false, new UTF8Encoding(true)))
                 {
                     // Format line endings and write to file
-                    string[] formattedLines = FormatLineEndings(richTextBox.Text.Split('\n'));
+                    string[] formattedLines = FormatLineEndings(rtxText.Text.Split('\n'));
                     writer.Write(string.Join("", formattedLines));
                 }
 
@@ -607,11 +607,11 @@ namespace Notepad
                 this.Text = fileName + " - Notepad";
 
                 // Display default line ending
-                lineEndingToolStripStatusLabel.Text = "Windows (CRLF)";
+                slblLineEnding.Text = "Windows (CRLF)";
             }
         }
 
-        private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiPrint_Click(object sender, EventArgs e)
         {
             using (PrintDocument printDocument = new PrintDocument())
             using (PrintDialog printDialog = new PrintDialog())
@@ -633,7 +633,7 @@ namespace Notepad
                         StringFormat format = new StringFormat(StringFormatFlags.LineLimit);
 
                         // Print the content of the richTextBox
-                        printArgs.Graphics.DrawString(richTextBox.Text, richTextBox.Font, Brushes.Black, areaToPrint, format);
+                        printArgs.Graphics.DrawString(rtxText.Text, rtxText.Font, Brushes.Black, areaToPrint, format);
                     };
 
                     // Start the printing process
@@ -701,7 +701,7 @@ namespace Notepad
             }
 
             // Update toolStrip line ending label
-            lineEndingToolStripStatusLabel.Text = lineEnding;
+            slblLineEnding.Text = lineEnding;
         }
 
         public void DetectEncoding()
@@ -713,17 +713,17 @@ namespace Notepad
                     // Peek ahead to detect the encoding
                     reader.Peek();
                     var encoding = reader.CurrentEncoding;
-                    charEncodingToolStripStatusLabel.Text = encoding.EncodingName;
+                    slblCharEncoding.Text = encoding.EncodingName;
                 }
             }
             catch (Exception)
             {
                 // Handle errors
-                charEncodingToolStripStatusLabel.Text = "Unknown";
+                slblCharEncoding.Text = "Unknown";
             }
         }
 
-        private void PageSetupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiPageSetup_Click(object sender, EventArgs e)
         {
             /*
             using (PageSetupDialog pageSetupDialog = new PageSetupDialog())
@@ -744,156 +744,156 @@ namespace Notepad
         private void Notepad_SizeChanged(object sender, EventArgs e)
         {
             // Dynamically adjust the size of richTextBox based on the window size
-            richTextBox.Height = this.ClientSize.Height - statusStrip.Height - toolStrip.Height;
-            richTextBox.Width = this.ClientSize.Width;
+            rtxText.Height = this.ClientSize.Height - ssrStatusStrip.Height - tsrToolStrip.Height;
+            rtxText.Width = this.ClientSize.Width;
         }
 
-        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiUndo_Click(object sender, EventArgs e)
         {
-            richTextBox.Undo();
+            rtxText.Undo();
         }
 
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiCut_Click(object sender, EventArgs e)
         {
-            richTextBox.Cut();
+            rtxText.Cut();
         }
 
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiCopy_Click(object sender, EventArgs e)
         {
-            richTextBox.Copy();
+            rtxText.Copy();
         }
 
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiPaste_Click(object sender, EventArgs e)
         {
             Paste();
         }
 
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiDelete_Click(object sender, EventArgs e)
         {
-            if (richTextBox.SelectedText.Length > 0)
+            if (rtxText.SelectedText.Length > 0)
             {
-                richTextBox.SelectedText = "";
+                rtxText.SelectedText = "";
             }
         }
 
-        private void SearchWithGoogleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiSearchWithGoogle_Click(object sender, EventArgs e)
         {
             SearchWithGoogle();
         }
 
-        private void SelectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiSelectAll_Click(object sender, EventArgs e)
         {
-            richTextBox.SelectAll();
+            rtxText.SelectAll();
         }
 
-        private void TimeDateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiTimeDate_Click(object sender, EventArgs e)
         {
             // Get the current date and time
             DateTime currentDateTime = DateTime.Now;
             string formattedDateTime = currentDateTime.ToString("h:mm tt M/d/yyyy");
-            richTextBox.SelectedText = formattedDateTime;
+            rtxText.SelectedText = formattedDateTime;
         }
 
-        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiAbout_Click(object sender, EventArgs e)
         {
             AboutForm aboutForm = new AboutForm();
             aboutForm.ShowDialog();
         }
 
-        private void RichTextBox_SelectionChanged(object sender, EventArgs e)
+        private void rtxText_SelectionChanged(object sender, EventArgs e)
         {
-            int line = richTextBox.GetLineFromCharIndex(richTextBox.SelectionStart) + 1;
-            int column = richTextBox.SelectionStart - richTextBox.GetFirstCharIndexFromLine(line - 1) + 1;
+            int line = rtxText.GetLineFromCharIndex(rtxText.SelectionStart) + 1;
+            int column = rtxText.SelectionStart - rtxText.GetFirstCharIndexFromLine(line - 1) + 1;
 
             // Update line and column information in toolStrip
-            lineColumnToolStripStatusLabel.Text = "  Ln " + line + ", Col " + column;
+            slblLineColumn.Text = "  Ln " + line + ", Col " + column;
 
-            if (!string.IsNullOrEmpty(richTextBox.SelectedText))
+            if (!string.IsNullOrEmpty(rtxText.SelectedText))
             {
                 // Update toolStrip items
-                cutToolStripMenuItem.Enabled = true;
-                copyToolStripMenuItem.Enabled = true;
-                deleteToolStripMenuItem.Enabled = true;
-                searchWithGoogleToolStripMenuItem.Enabled = true;
+                tsmiCut.Enabled = true;
+                tsmiCopy.Enabled = true;
+                tsmiDelete.Enabled = true;
+                tsmiSearchWithGoogle.Enabled = true;
 
                 // Update contextMenu items
-                cutContextMenuStripButton.Enabled = true;
-                copyContextMenuStripButton.Enabled = true;
-                deleteContextMenuStripButton.Enabled = true;
-                searchWithGoogleContextMenuStripButton.Enabled = true;
+                btncmsCut.Enabled = true;
+                btncmsCopy.Enabled = true;
+                btncmsDelete.Enabled = true;
+                btncmsSearchWithGoogle.Enabled = true;
 
             }
             else
             {
                 // Update toolStrip items
-                cutToolStripMenuItem.Enabled = false;
-                copyToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-                searchWithGoogleToolStripMenuItem.Enabled = false;
+                tsmiCut.Enabled = false;
+                tsmiCopy.Enabled = false;
+                tsmiDelete.Enabled = false;
+                tsmiSearchWithGoogle.Enabled = false;
 
                 // Update contextMenu items
-                cutContextMenuStripButton.Enabled = false;
-                copyContextMenuStripButton.Enabled = false;
-                deleteContextMenuStripButton.Enabled = false;
-                searchWithGoogleContextMenuStripButton.Enabled = false;
+                btncmsCut.Enabled = false;
+                btncmsCopy.Enabled = false;
+                btncmsDelete.Enabled = false;
+                btncmsSearchWithGoogle.Enabled = false;
             }
 
             // Update state of Paste buttons
-            pasteToolStripMenuItem.Enabled = Clipboard.ContainsText();
-            pasteContextMenuStripButton.Enabled = Clipboard.ContainsText();
+            tsmiPaste.Enabled = Clipboard.ContainsText();
+            btncmsPaste.Enabled = Clipboard.ContainsText();
         }
 
-        private void ZoomInToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiZoomIn_Click(object sender, EventArgs e)
         {
-            richTextBox.ZoomFactor += 0.1f;
-            float zoomFactor = richTextBox.ZoomFactor * 100;
+            rtxText.ZoomFactor += 0.1f;
+            float zoomFactor = rtxText.ZoomFactor * 100;
 
             // Round to the nearest integer, display new zoom
             int roundedZoomFactor = (int)Math.Round(zoomFactor);
-            zoomToolStripStatusLabel.Text = roundedZoomFactor + "%";
+            slblZoom.Text = roundedZoomFactor + "%";
         }
 
-        private void ZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiZoomOut_Click(object sender, EventArgs e)
         {
-            richTextBox.ZoomFactor -= 0.1f;
-            float zoomFactor = richTextBox.ZoomFactor * 100;
+            rtxText.ZoomFactor -= 0.1f;
+            float zoomFactor = rtxText.ZoomFactor * 100;
 
             // Round to the nearest integer, display new zoom
             int roundedZoomFactor = (int)Math.Round(zoomFactor);
-            zoomToolStripStatusLabel.Text = roundedZoomFactor + "%";
+            slblZoom.Text = roundedZoomFactor + "%";
         }
 
-        private void RestoreDefaultZoomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiDefaultZoom_Click(object sender, EventArgs e)
         {
-            richTextBox.ZoomFactor = 1f;
+            rtxText.ZoomFactor = 1f;
 
             // Display new zoom
-            float zoomFactor = richTextBox.ZoomFactor * 100;
-            zoomToolStripStatusLabel.Text = zoomFactor + "%";
+            float zoomFactor = rtxText.ZoomFactor * 100;
+            slblZoom.Text = zoomFactor + "%";
         }
 
-        private void RichTextBox_TextChanged(object sender, EventArgs e)
+        private void rtxText_TextChanged(object sender, EventArgs e)
         {
             DetectLineEnding();
 
             // Update toolStrip buttons
-            findToolStripMenuItem.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
-            findPreviousToolStripMenuItem.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
+            tsmiFind.Enabled = !string.IsNullOrEmpty(rtxText.Text);
+            tsmiFindPrevious.Enabled = !string.IsNullOrEmpty(rtxText.Text);
 
             // Update state of Select All buttons
-            selectAllToolStripMenuItem.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
-            selectAllContextMenuStripButton.Enabled = !string.IsNullOrEmpty(richTextBox.Text);
+            tsmiSelectAll.Enabled = !string.IsNullOrEmpty(rtxText.Text);
+            btncmsSelectAll.Enabled = !string.IsNullOrEmpty(rtxText.Text);
 
             // Update state of Undo buttons
-            undoToolStripMenuItem.Enabled = richTextBox.CanUndo;
-            undoContextMenuStripButton.Enabled = richTextBox.CanUndo;
+            tsmiUndo.Enabled = rtxText.CanUndo;
+            btncmsUndo.Enabled = rtxText.CanUndo;
 
             // Update state of Paste buttons
-            pasteToolStripMenuItem.Enabled = Clipboard.ContainsText();
-            pasteContextMenuStripButton.Enabled = Clipboard.ContainsText();
+            tsmiPaste.Enabled = Clipboard.ContainsText();
+            btncmsPaste.Enabled = Clipboard.ContainsText();
 
             // Update window title
-            if (richTextBox.Modified)
+            if (rtxText.Modified)
             {
                 this.Text = "*" + fileName + " - Notepad";
             }
@@ -903,15 +903,15 @@ namespace Notepad
             }
         }
 
-        private void FindToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFind_Click(object sender, EventArgs e)
         {
             Find();
         }
 
-        private void GoToToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiGoTo_Click(object sender, EventArgs e)
         {
             GoToForm goToForm = new GoToForm(lastGoToLine);
-            goToForm.TotalLines = richTextBox.Lines.Length;
+            goToForm.TotalLines = rtxText.Lines.Length;
             goToForm.Owner = this;
             goToForm.ShowDialog();
 
@@ -919,18 +919,18 @@ namespace Notepad
             if (goToForm.LineNumber > 0)
             {
                 int lineIndex = goToForm.LineNumber - 1;
-                int charIndex = richTextBox.GetFirstCharIndexFromLine(lineIndex);
+                int charIndex = rtxText.GetFirstCharIndexFromLine(lineIndex);
                 if (charIndex >= 0)
                 {
-                    richTextBox.SelectionStart = charIndex;
-                    richTextBox.ScrollToCaret();
+                    rtxText.SelectionStart = charIndex;
+                    rtxText.ScrollToCaret();
                 }
             }
         }
 
         private void Notepad_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (richTextBox.Modified)
+            if (rtxText.Modified)
             {
                 // Save dialog
                 DialogResult result = MessageBox.Show($"Do you want to save changes to {fileName}?", "Notepad",
@@ -949,7 +949,7 @@ namespace Notepad
             }
         }
 
-        private void FindNextToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFindNext_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(lastSearch))
             {
@@ -961,7 +961,7 @@ namespace Notepad
             }
         }
 
-        private void FindPreviousToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiFindPrevious_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(lastSearch))
             {
@@ -973,40 +973,40 @@ namespace Notepad
             }
         }
 
-        private void UndoContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsUndo_Click(object sender, EventArgs e)
         {
-            richTextBox.Undo();
+            rtxText.Undo();
         }
 
-        private void CutContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsCut_Click(object sender, EventArgs e)
         {
-            richTextBox.Cut();
+            rtxText.Cut();
         }
 
-        private void CopyContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsCopy_Click(object sender, EventArgs e)
         {
-            richTextBox.Copy();
+            rtxText.Copy();
         }
 
-        private void PasteContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsPaste_Click(object sender, EventArgs e)
         {
             Paste();
         }
 
-        private void DeleteContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsDelete_Click(object sender, EventArgs e)
         {
-            if (richTextBox.SelectedText.Length > 0)
+            if (rtxText.SelectedText.Length > 0)
             {
-                richTextBox.SelectedText = "";
+                rtxText.SelectedText = "";
             }
         }
 
-        private void SelectAllContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsSelectAll_Click(object sender, EventArgs e)
         {
-            richTextBox.SelectAll();
+            rtxText.SelectAll();
         }
 
-        private void SearchWithGoogleContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsSearchWithGoogle_Click(object sender, EventArgs e)
         {
             SearchWithGoogle();
         }
@@ -1032,20 +1032,20 @@ namespace Notepad
             { '\u2029', "[PS]" }     // Paragraph Separator
         };
 
-        private void ShowUnicodeControlCharactersContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsShowUnicodeControlChars_Click(object sender, EventArgs e)
         {
             // Update vars and buttons
             showUnicodeControlChars = !showUnicodeControlChars;
-            showUnicodeControlCharactersContextMenuStripButton.Checked = showUnicodeControlChars;
+            btncmsShowUnicodeControlChars.Checked = showUnicodeControlChars;
 
             // Backup original text
-            string originalText = richTextBox.Text;
+            string originalText = rtxText.Text;
 
             // Show unicode control characters
             if (showUnicodeControlChars)
             {
                 // Replace control characters with visible representations
-                string textWithControlChars = richTextBox.Text;
+                string textWithControlChars = rtxText.Text;
 
                 for (int i = 0; i < textWithControlChars.Length; i++)
                 {
@@ -1058,39 +1058,39 @@ namespace Notepad
                     }
                 }
 
-                richTextBox.Text = textWithControlChars;
+                rtxText.Text = textWithControlChars;
             }
             else
             {
                 // Restore the original text without visible representations
-                richTextBox.Text = originalText;
+                rtxText.Text = originalText;
             }
         }
 
-        private void RightToLeftReadingOrderContextMenuStripButton_Click(object sender, EventArgs e)
+        private void btncmsRightToLeft_Click(object sender, EventArgs e)
         {
             // Save richTextBox Modified state
-            bool rtbPrevState = richTextBox.Modified;
+            bool rtbPrevState = rtxText.Modified;
 
             // Update vars and buttons
-            rightToLeftReadingOrderContextMenuStripButton.Checked = !rightToLeftReadingOrderContextMenuStripButton.Checked;
+            btncmsRightToLeft.Checked = !btncmsRightToLeft.Checked;
             displayRightToLeft = !displayRightToLeft;
 
             // Set the RightToLeft property of richTextBox
-            richTextBox.RightToLeft = displayRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+            rtxText.RightToLeft = displayRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
             // Reset richTextBox Modified to previous state
-            richTextBox.Modified = rtbPrevState;
+            rtxText.Modified = rtbPrevState;
         }
 
-        private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        private void cmsContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             // Adjust contextMenuStrip display style
-            contextMenuStrip.RightToLeft = RightToLeft.No;
-            contextMenuStrip.Show(Cursor.Position);
+            cmsContextMenuStrip.RightToLeft = RightToLeft.No;
+            cmsContextMenuStrip.Show(Cursor.Position);
         }
 
-        private void RichTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void rtxText_KeyDown(object sender, KeyEventArgs e)
         {
             // Suppress center paragraph shortcut key
             if (e.Control && e.KeyCode == Keys.E)

@@ -16,17 +16,17 @@ namespace Notepad
             this.KeyPreview = true;
 
             // Reload previous search params
-            findWhatTextBox.Text = lastSearchVal;
-            downRadioButton.Checked = lastRadioDownVal;
-            upRadioButton.Checked = lastRadioUpVal;
-            matchCaseCheckBox.Checked = lastMatchCaseVal;
-            wrapAroundCheckBox.Checked = lastWrapAroundVal;
+            txtFindWhat.Text = lastSearchVal;
+            rdoDown.Checked = lastRadioDownVal;
+            rdoUp.Checked = lastRadioUpVal;
+            chkMatchCase.Checked = lastMatchCaseVal;
+            chkWrapAround.Checked = lastWrapAroundVal;
         }
 
         public void SendDataToParent()
         {
-            ((Notepad)this.Owner).ReceiveDataFromFindForm(this.findWhatTextBox.Text, this.upRadioButton.Checked, this.downRadioButton.Checked,
-                this.matchCaseCheckBox.Checked, this.wrapAroundCheckBox.Checked);
+            ((Notepad)this.Owner).ReceiveDataFromFindForm(this.txtFindWhat.Text, this.rdoUp.Checked, this.rdoDown.Checked,
+                this.chkMatchCase.Checked, this.chkWrapAround.Checked);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -34,8 +34,8 @@ namespace Notepad
             // Find textbox shortcut keys
             if (keyData == (Keys.Alt | Keys.N))
             {
-                findWhatTextBox.Focus();
-                findWhatTextBox.SelectAll();
+                txtFindWhat.Focus();
+                txtFindWhat.SelectAll();
             }
 
             // Allow base class to process the key event
@@ -44,11 +44,11 @@ namespace Notepad
 
         private void FindNext()
         {
-            string textToFind = findWhatTextBox.Text;
+            string textToFind = txtFindWhat.Text;
 
             RichTextBoxFinds searchOptions = RichTextBoxFinds.None;
 
-            if (matchCaseCheckBox.Checked)
+            if (chkMatchCase.Checked)
             {
                 searchOptions |= RichTextBoxFinds.MatchCase;
             }
@@ -56,10 +56,10 @@ namespace Notepad
             int startPosition = RichTextBoxControl.SelectionStart;
             int index;
 
-            if (downRadioButton.Checked)
+            if (rdoDown.Checked)
             {
                 index = RichTextBoxControl.Find(textToFind, startPosition + 1, searchOptions);
-                if (index == -1 && wrapAroundCheckBox.Checked)
+                if (index == -1 && chkWrapAround.Checked)
                 {
                     index = RichTextBoxControl.Find(textToFind, 0, searchOptions);
                 }
@@ -67,7 +67,7 @@ namespace Notepad
             else
             {
                 index = RichTextBoxControl.Find(textToFind, 0, searchOptions);
-                if (index == -1 && wrapAroundCheckBox.Checked)
+                if (index == -1 && chkWrapAround.Checked)
                 {
                     index = RichTextBoxControl.Find(textToFind, RichTextBoxControl.Text.Length, searchOptions);
                 }
@@ -98,20 +98,20 @@ namespace Notepad
             SendDataToParent();
         }
 
-        private void FindWhatTextBox_TextChanged(object sender, EventArgs e)
+        private void txtFindWhat_TextChanged(object sender, EventArgs e)
         {
             // Update Find button state
-            findNextButton.Enabled = !string.IsNullOrEmpty(findWhatTextBox.Text);
+            btnFindNext.Enabled = !string.IsNullOrEmpty(txtFindWhat.Text);
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void FindNextButton_Click(object sender, EventArgs e)
+        private void btnFindNext_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(findWhatTextBox.Text))
+            if (!string.IsNullOrEmpty(txtFindWhat.Text))
             {
                 FindNext();
             }
@@ -124,7 +124,7 @@ namespace Notepad
                 this.Close();
             }
 
-            if (e.KeyCode == Keys.Enter && findNextButton.Enabled)
+            if (e.KeyCode == Keys.Enter && btnFindNext.Enabled)
             {
                 FindNext();
             }
